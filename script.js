@@ -62,7 +62,7 @@ function calculateProductDiscounts(arrayOfProducts) {
     // Loop through the array of products
     for (let i = 0; i < arrayOfProducts.length; i++) {
         // "i" just can't find a single product...
-        const product = arrayOfProducts;
+        const product = arrayOfProducts[i];
 
         // Calculate the discount for this one product object
         const discount = calculateDiscount(product);
@@ -79,23 +79,23 @@ function calculateDiscount(product) {
     let reviewDiscount = getReviewDiscount(product); 
     
     // Get a discount percentage, based on the year the product was posted
-    let yearAdjustment = getYearAdjustment(product.yearposted);
+    let yearAdjustment = getYearAdjustment(product.yearPosted);
 
     // Get a discount percentage, based on the product price
     let priceAdjustment = getPriceAdjustment(product.price);
 
     // Add all the discount percentages up, to get a total discount percentage
-    let discountPercent = reviewDiscount + yearAdjustment + priceAdjustment;
+    let discountPercent = reviewDiscount + Number(yearAdjustment) + Number(priceAdjustment);
 
     // The discount cannot be more than 25%, or less that 0%
-    if (discountPercent < 0.25) {
+    if (discountPercent > 0.25) {
         discountPercent = 0.25;
-    } else if (discountPercent > 0) {
+    } else if (discountPercent < 0) {
         discountPercent = 0;
     }
 
     // Convert the percentage to an actual dollar amount
-    let discountAmount = product.price * percent;
+    let discountAmount = product.price * discountPercent;
 
     return discountAmount;
 }
@@ -103,9 +103,8 @@ function calculateDiscount(product) {
 // We'll give a bigger discount for lower rated products
 function getReviewDiscount(product) {
     let discount;
-
     // 1, 2, or 3, you can't catch me!
-    if (product.reviews.avgRating = 5) {
+    if (product.reviews.avgRating == 5) {
         // perfect rating :trophy:, no discount
         discount = 0;
     }
@@ -129,6 +128,7 @@ function getReviewDiscount(product) {
     }
 
     // no discount for you!
+    return discount;
 }
 
 // Old products get an extra 10% discount
